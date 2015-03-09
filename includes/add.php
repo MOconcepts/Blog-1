@@ -3,8 +3,11 @@
 	include("dbInfo.php");
 	$conn = mysqli_connect("localhost",DBUSERNAME,DBPASSWORD,DB);
 	
-	$title=$_POST["title"];
-	$content=$_POST["content"];
+
+	$title=htmlentities($_POST['title'], ENT_QUOTES);
+	$tidy = new Tidy();
+	$html=$_POST["content"];
+	$content= $tidy->repairString($html, array("output-xml" => true,"input-xml" => true));
 	$username=$_SESSION["username"];
 	$date = getdate();
 	$datef = $date['year']."-".$date['mon']."-".$date['mday'];
