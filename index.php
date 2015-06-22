@@ -1,50 +1,31 @@
 <html>
-<head>
-<title>Blog</title>
-</head>
-
+<head><title>Blog</title></head>
 <body>
-	<?php
-		session_start();
-		include("includes/dbInfo.php");
-		$conn = mysqli_connect("localhost",DBUSERNAME,DBPASSWORD,DB);
-		
-		$query = mysqli_query($conn,"SELECT * FROM Posts");
-		$total=mysqli_num_rows($query);
-		
-		
-		if (empty($_GET["start"])){
-			$start = $total;
-			$end = $start-4;
-			$back=false;
-		} else {
-			$start = $_GET["start"];
-			$end = $start-4;
-			if ($start+5>$total){
-				$back=false;
-			} else{
-				$back=true;
-			}
-		}
-		
-		$articles = mysqli_query($conn,"SELECT * FROM Posts WHERE ID <= '$start' AND ID >= '$end' ORDER BY `ID` DESC");
-		
-		for ($i = 1; $i<= mysqli_num_rows($articles); $i++){
-			$row = mysqli_fetch_assoc($articles);
-			echo "<h1>".$row["Title"]."</h1>"; //Title of article
-			echo "<h3>By: ".$row["Author"]."</h3>"; //Author of article
-			echo "<p>".$row["Content"]."</p>"; //Main content of article
-			echo "<P>".$row["Date"]."</p>"; //Date article was created
-		}
-		
+<?php
+	include "includes/dbInfo.php";
+	include "includes/articles.php";
+	session_start();
 
-		if ($back==true){
-			echo "<a href='index.php?start=".($start+5) ."'>Previous Page</a>";
+	
+	$articles = new articles($conn); //Initialised object
+	$p = $_GET["p"]; //gets variable for page
+	$start = ($p-1)*5; //Converts page number into starting point
+	
+	for ($i = $start;$i<$articles->getFinish($start,5);$i++){
+		echo "<h1>".$articles->getArticle($i, "Title")."</h1>"; //Title of article
+		echo "<h3>By: ".$articles->getArticle($i, "Author")."</h3>"; //Author of article
+		echo "<p>".$articles->getArticle($i, "Content")."</p>"; //Main content of article
+		echo "<P>".$articles->getArticle($i, "Date")."</p>"; //Date article was created
+	}
+
+	
+	if ($articles->newVisible($start)){ //Displays buttons depending on whether article methods return true
+			echo "<a href='newIndex.php?p=".($p-1) ."'>Previous Page</a>";
 		}
 		
-		if ($end>1){
-			echo '<a href="index.php?start='.($start-5) .'">Next Page</a>';
+		if ($articles->oldVisible($start,5)){
+			echo '<a href="newIndex.php?p='.($p+1) .'">Next Page</a>';
 		}
-	?>
+?>
 </body>
 </html>
