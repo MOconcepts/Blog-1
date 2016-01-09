@@ -6,7 +6,7 @@
 	include "includes/articles.php";
 	session_start();
 
-	$conn = new mysqli("localhost",DBUSERNAME,DBPASSWORD,DB); //Esatblish database connection 
+	$conn = new mysqli("localhost",DBUSERNAME,DBPASSWORD,DB); //Esatblish database connection
 	$articles = new articles($conn); //Initialised object
 
 	$p = $_GET["p"]; //gets variable for page
@@ -17,7 +17,7 @@
 	for ($i = 0;$i<$articlesToShow->num_rows;$i++){ //Runs through the 5 articles
 		$articlesToShow->data_seek($i);
 		$article = $articlesToShow->fetch_assoc(); //Fetches relavent article
-		echo "<h1>".$article["Title"]."</h1>"; //Title of article
+		echo "<h1><a href='post.php?id=".$article["ID"]."'>".$article["Title"]."</a></h1>"; //Title of article
 		echo "<h3>By: ".$article["Author"]."</h3>"; //Author of article
 		echo "<p>".$article["Content"]."</p>"; //Main content of article
 		echo "<P>".$article["Date"]."</p>"; //Date article was created

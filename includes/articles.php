@@ -18,8 +18,13 @@
 		}
 
 		public function getArticleById($id){
-			$query = "SELECT * FROM Posts WHERE `ID` = $id";
-			return $this->aConn->query($query)->fetch_assoc();
+			$query = "SELECT * FROM Posts WHERE `ID` = $id"; //Runs query to select by ID
+			$result =$this->aConn->query($query);
+			if ($result->num_rows == 0){ //Returns null if no result
+				return null;
+			} else {
+				return $result->fetch_assoc(); //otherwise returns record
+			}
 		}
 
 		//Returns total number of articles
