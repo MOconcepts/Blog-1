@@ -19,7 +19,12 @@
 		$article = $articlesToShow->fetch_assoc(); //Fetches relavent article
 		echo "<h1><a href='post.php?id=".$article["ID"]."'>".$article["Title"]."</a></h1>"; //Title of article
 		echo "<h3>By: ".$article["Author"]."</h3>"; //Author of article
-		echo "<p>".$article["Content"]."</p>"; //Main content of article
+
+		$content = $article["Content"];
+		if(strlen($content)>100){
+		$content = substr($article["Content"],0,-100)."... <a href='post.php?id=".$article["ID"]."'>Read More</a>";
+		}
+		echo "<p>".$content."</p>"; //Main content of article
 		echo "<P>".$article["Date"]."</p>"; //Date article was created
 	}
 	if ($articles->newVisible()){ //Displays buttons depending on whether article methods return true
