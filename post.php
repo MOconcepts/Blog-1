@@ -26,5 +26,7 @@
   echo "<p>".$article["Content"]."</p>"; //Main content of article
   echo "<P>".$article["Date"]."</p>"; //Date article was created
  ?>
+
+ <a href="" onclick="history.go(-1)">Go Back</a>
 </body>
 </html>

@@ -22,7 +22,7 @@
 
 		$content = $article["Content"];
 		if(strlen($content)>100){
-		$content = substr($article["Content"],0,-100)."... <a href='post.php?id=".$article["ID"]."'>Read More</a>";
+		$content = substr($article["Content"],0,1000)."... <a href='post.php?id=".$article["ID"]."'>Read More</a>";
 		}
 		echo "<p>".$content."</p>"; //Main content of article
 		echo "<P>".$article["Date"]."</p>"; //Date article was created
